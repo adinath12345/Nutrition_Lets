@@ -1,11 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 // express type object
 const app = express()
 
 // moddleware
 app.use(express.json())
+app.use(cors())
 
 // connection between mongodb and nodejs
 mongoose.connect("mongodb://127.0.0.1:27017/Nutrition", {
@@ -41,14 +43,12 @@ app.post("/food/create" , (req,res) => {
     foodObj.save().then( () => {
         res.send({status:"Food Stored Succesfully.."})
     })
-    // res.send({status :"food strored successfully..."});
 })
 
-
-// app.get('/demo',(req,res) => {
-//     res.send('Adinathh....')
-//     console.log('getttingg......')
-// })
+app.get("/foods",async (req,res) => {
+    let foods = await foodModel.find();
+    res.send({foods:foods});
+})
 
 app.listen(8000);
 
